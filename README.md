@@ -1,3 +1,37 @@
+# Caddy-DNS-TransIP
+
+This is an attempt to create a Caddy DNS module that interacts with the TransIP API to enable getting
+TLS certificates for your domain.
+
+To build Caddy including this module, execute `xcaddy build --with github.com/bashopman/caddy-dns-transip=./`
+where `./` is the root of the checked out repository.
+
+Example Caddyfile:
+```
+<domainname> {
+  tls {
+    dns transip <username> <path to TransIP API private key file>
+  }
+}
+```
+
+*NOTE:* the implementation does not work:
+```
+ERROR	tls.issuance.acme.acme_client	cleaning up solver	{"identifier": "sub.example.com", "challenge_type": "dns-01", "error": "no memory of presenting a DNS record for sub.example.com (probably OK if presenting failed)"}
+ERROR	tls.obtain	could not get certificate from issuer	{"identifier": "sub.example.com", "issuer": "acme-v02.api.letsencrypt.org-directory", "error": "[sub.example.com] solving challenges: presenting for challenge: adding temporary record for zone sub.example.com.: This is not a valid domain name: 'sub.example.com.' (order=https://acme-v02.api.letsencrypt.org/acme/order/******/*******) (ca=https://acme-v02.api.letsencrypt.org/directory)"}
+```
+I cannot find the cause of this error message.
+
+What does work:
+* the arguments from the Caddyfile are correctly read
+* the code is able to get domain records from the TransIP API using 
+    ```
+    records, err := p.Provider.GetRecords(ctx, "sub.example.com")
+    fmt.Print(records)
+    ```
+
+---
+
 **DEVELOPER INSTRUCTIONS:**
 
 - Update module name in go.mod
