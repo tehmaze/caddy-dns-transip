@@ -1,4 +1,4 @@
-module github.com/caddy-dns/template
+module github.com/bashopman/caddy-dns-transip
 
 go 1.16
 

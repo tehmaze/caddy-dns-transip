@@ -1,4 +1,4 @@
-package template
+package caddy_dns_transip
 
 import (
 	"github.com/caddyserver/caddy/v2"
